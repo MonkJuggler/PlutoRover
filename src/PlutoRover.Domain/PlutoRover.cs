@@ -149,29 +149,34 @@ namespace PlutoRover.Domain
             {
                 case (Direction.North):
                 {
-                    _position.Y += coefficient;
+                    _position.Y = WrapAround(_position.Y + coefficient, _gridHeight);
                     break;
                 }
                 case (Direction.East):
                 {
-                    _position.X += coefficient;
+                    _position.X = WrapAround(_position.X + coefficient, _gridWidth);
                     break;
                 }
                 case (Direction.South):
                 {
-                    _position.Y -= coefficient;
-                    break;
+                        _position.Y = WrapAround(_position.Y - coefficient, _gridHeight);
+                        break;
                 }
                 case (Direction.West):
                 {
-                    _position.X -= coefficient;
-                    break;
+                        _position.X = WrapAround(_position.X - coefficient, _gridWidth);
+                        break;
                 }
                 default:
                 {
                     throw new NotImplementedException();
                 }
             }
+        }
+
+        private int WrapAround(int n, int mod)
+        {
+            return (n + mod) % mod;
         }
     }
 }
