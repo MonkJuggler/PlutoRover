@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Direction.cs" />
+    <Compile Include="ICheckObstacles.cs" />
     <Compile Include="IRover.cs" />
     <Compile Include="PlutoRover.cs" />
     <Compile Include="Position.cs" />

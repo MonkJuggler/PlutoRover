@@ -6,20 +6,23 @@ namespace PlutoRover.Domain
     public class PlutoRover : IRover
     {
         private readonly Position _position;
+        private readonly ICheckObstacles _obstaclesChecker;
         private readonly int _gridWidth;
         private readonly int _gridHeight;
 
-        public PlutoRover(Position position, int gridWidth, int gridHeight)
+        public PlutoRover(Position position, int gridWidth, int gridHeight, ICheckObstacles obstaclesChecker)
         {
             _position = position;
             _gridWidth = gridWidth;
             _gridHeight = gridHeight;
+            _obstaclesChecker = obstaclesChecker;
         }
 
-        public PlutoRover(int x, int y, Direction direction, int gridWidth, int gridHeight)
+        public PlutoRover(int x, int y, Direction direction, int gridWidth, int gridHeight, ICheckObstacles obstaclesChecker)
         {
             _gridWidth = gridWidth;
             _gridHeight = gridHeight;
+            _obstaclesChecker = obstaclesChecker;
             _position = new Position(x, y, direction);
         }
 

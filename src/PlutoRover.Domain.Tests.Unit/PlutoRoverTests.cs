@@ -1,4 +1,5 @@
 ﻿using System;
+using Moq;
 using Xunit;
 
 namespace PlutoRover.Domain.Tests.Unit
@@ -7,12 +8,17 @@ namespace PlutoRover.Domain.Tests.Unit
     {
         private PlutoRover _plutoRover;
         private Position _defaultPosition = new Position(0, 0, Direction.North);
+        private Mock<ICheckObstacles> _mockObstaclesChecker;
         private int _defaultGridWidth = 100;
         private int _defaultGridHeight = 100;
 
         public PlutoRoverTests()
         {
-            _plutoRover = new PlutoRover(_defaultPosition, _defaultGridWidth, _defaultGridHeight);
+            _mockObstaclesChecker = new Mock<ICheckObstacles>();
+            _mockObstaclesChecker
+                .Setup(x => x.ObstacleExist(It.IsAny<int>(), It.IsAny<int>()))
+                .Returns(false);
+            _plutoRover = new PlutoRover(_defaultPosition, _defaultGridWidth, _defaultGridHeight, _mockObstaclesChecker.Object);
         }
 
         [Theory]
@@ -36,7 +42,7 @@ namespace PlutoRover.Domain.Tests.Unit
         [InlineData(1, 1, Direction.West, 0, 1)]
         public void ExecuteCommands_WhenMoveForwardCommand_TheRoverMovesForward(int start_x, int start_y, Direction direction, int end_x, int end_y)
         {
-            _plutoRover = new PlutoRover(start_x, start_y, direction, _defaultGridWidth, _defaultGridHeight);
+            _plutoRover = new PlutoRover(start_x, start_y, direction, _defaultGridWidth, _defaultGridHeight, _mockObstaclesChecker.Object);
 
             _plutoRover.ExecuteCommands("F");
 
@@ -52,7 +58,7 @@ namespace PlutoRover.Domain.Tests.Unit
         [InlineData(1, 1, Direction.West, 2, 1)]
         public void ExecuteCommands_WhenMoveBackwardCommand_TheRoverMovesBackward(int start_x, int start_y, Direction direction, int end_x, int end_y)
         {
-            _plutoRover = new PlutoRover(start_x, start_y, direction, _defaultGridWidth, _defaultGridHeight);
+            _plutoRover = new PlutoRover(start_x, start_y, direction, _defaultGridWidth, _defaultGridHeight, _mockObstaclesChecker.Object);
 
             _plutoRover.ExecuteCommands("B");
 
@@ -68,7 +74,7 @@ namespace PlutoRover.Domain.Tests.Unit
         [InlineData(1, 1, Direction.West, Direction.North)]
         public void ExecuteCommands_WhenRotateRightCommand_TheRoverRotatesRight(int x, int y, Direction start_dir, Direction end_dir)
         {
-            _plutoRover = new PlutoRover(x, y, start_dir, _defaultGridWidth, _defaultGridHeight);
+            _plutoRover = new PlutoRover(x, y, start_dir, _defaultGridWidth, _defaultGridHeight, _mockObstaclesChecker.Object);
 
             _plutoRover.ExecuteCommands("R");
 
@@ -84,7 +90,7 @@ namespace PlutoRover.Domain.Tests.Unit
         [InlineData(1, 1, Direction.East, Direction.North)]
         public void ExecuteCommands_WhenRotateLeftCommand_TheRoverRotatesLeft(int x, int y, Direction start_dir, Direction end_dir)
         {
-            _plutoRover = new PlutoRover(x, y, start_dir, _defaultGridWidth, _defaultGridHeight);
+            _plutoRover = new PlutoRover(x, y, start_dir, _defaultGridWidth, _defaultGridHeight, _mockObstaclesChecker.Object);
 
             _plutoRover.ExecuteCommands("L");
 
@@ -105,7 +111,7 @@ namespace PlutoRover.Domain.Tests.Unit
         public void ExecuteCommands_WhenMoveForwardCommandOverTheGridLimit_TheRoverWrapsAround(
             int start_x, int start_y, int gridWidth, int gridHeight, Direction direction, int end_x, int end_y)
         {
-            _plutoRover = new PlutoRover(start_x, start_y, direction, gridWidth, gridHeight);
+            _plutoRover = new PlutoRover(start_x, start_y, direction, gridWidth, gridHeight, _mockObstaclesChecker.Object);
 
             _plutoRover.ExecuteCommands("F");
 
@@ -126,7 +132,7 @@ namespace PlutoRover.Domain.Tests.Unit
         public void ExecuteCommands_WhenMoveBackwardCommandOverTheGridLimit_TheRoverWrapsAround(
             int start_x, int start_y, int gridWidth, int gridHeight, Direction direction, int end_x, int end_y)
         {
-            _plutoRover = new PlutoRover(start_x, start_y, direction, gridWidth, gridHeight);
+            _plutoRover = new PlutoRover(start_x, start_y, direction, gridWidth, gridHeight, _mockObstaclesChecker.Object);
 
             _plutoRover.ExecuteCommands("B");
 
