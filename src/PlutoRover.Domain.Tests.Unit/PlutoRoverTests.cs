@@ -98,6 +98,10 @@ namespace PlutoRover.Domain.Tests.Unit
         [InlineData(1, 1, 2, 2, Direction.East, 0, 1)]
         [InlineData(1, 0, 2, 2, Direction.South, 1, 1)]
         [InlineData(0, 1, 2, 2, Direction.West, 1, 1)]
+        [InlineData(2, 1, 3, 2, Direction.North, 2, 0)]
+        [InlineData(2, 1, 3, 2, Direction.East, 0, 1)]
+        [InlineData(2, 0, 3, 2, Direction.South, 2, 1)]
+        [InlineData(0, 0, 3, 2, Direction.West, 2, 0)]
         public void ExecuteCommands_WhenMoveForwardCommandOverTheGridLimit_TheRoverWrapsAround(
             int start_x, int start_y, int gridWidth, int gridHeight, Direction direction, int end_x, int end_y)
         {
@@ -115,6 +119,10 @@ namespace PlutoRover.Domain.Tests.Unit
         [InlineData(0, 0, 2, 2, Direction.East, 1, 0)]
         [InlineData(1, 1, 2, 2, Direction.South, 1, 0)]
         [InlineData(1, 0, 2, 2, Direction.West, 0, 0)]
+        [InlineData(2, 0, 3, 2, Direction.North, 2, 1)]
+        [InlineData(0, 1, 3, 2, Direction.East, 2, 1)]
+        [InlineData(2, 1, 3, 2, Direction.South, 2, 0)]
+        [InlineData(2, 0, 3, 2, Direction.West, 0, 0)]
         public void ExecuteCommands_WhenMoveBackwardCommandOverTheGridLimit_TheRoverWrapsAround(
             int start_x, int start_y, int gridWidth, int gridHeight, Direction direction, int end_x, int end_y)
         {
