@@ -92,5 +92,39 @@ namespace PlutoRover.Domain.Tests.Unit
             Assert.Equal(y, _plutoRover.Position.Y);
             Assert.Equal(end_dir, _plutoRover.Position.Direction);
         }
+
+        [Theory]
+        [InlineData(1, 1, 2, 2, Direction.North, 1, 0)]
+        [InlineData(1, 1, 2, 2, Direction.East, 0, 1)]
+        [InlineData(1, 0, 2, 2, Direction.South, 1, 1)]
+        [InlineData(0, 1, 2, 2, Direction.West, 1, 1)]
+        public void ExecuteCommands_WhenMoveForwardCommandOverTheGridLimit_TheRoverWrapsAround(
+            int start_x, int start_y, int gridWidth, int gridHeight, Direction direction, int end_x, int end_y)
+        {
+            _plutoRover = new PlutoRover(start_x, start_y, direction, gridWidth, gridHeight);
+
+            _plutoRover.ExecuteCommands("F");
+
+            Assert.Equal(end_x, _plutoRover.Position.X);
+            Assert.Equal(end_y, _plutoRover.Position.Y);
+            Assert.Equal(direction, _plutoRover.Position.Direction);
+        }
+
+        [Theory]
+        [InlineData(0, 0, 2, 2, Direction.North, 0, 1)]
+        [InlineData(0, 0, 2, 2, Direction.East, 1, 0)]
+        [InlineData(1, 1, 2, 2, Direction.South, 1, 0)]
+        [InlineData(1, 0, 2, 2, Direction.West, 0, 0)]
+        public void ExecuteCommands_WhenMoveBackwardCommandOverTheGridLimit_TheRoverWrapsAround(
+            int start_x, int start_y, int gridWidth, int gridHeight, Direction direction, int end_x, int end_y)
+        {
+            _plutoRover = new PlutoRover(start_x, start_y, direction, gridWidth, gridHeight);
+
+            _plutoRover.ExecuteCommands("B");
+
+            Assert.Equal(end_x, _plutoRover.Position.X);
+            Assert.Equal(end_y, _plutoRover.Position.Y);
+            Assert.Equal(direction, _plutoRover.Position.Direction);
+        }
     }
 }
