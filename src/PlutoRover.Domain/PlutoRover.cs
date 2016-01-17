@@ -31,6 +31,11 @@ namespace PlutoRover.Domain
                         MoveForward();
                         break;
                     }
+                    case ('B'):
+                    {
+                        MoveBackward();
+                        break;
+                    }
                     default:
                     {
                         throw new NotImplementedException();
@@ -77,6 +82,37 @@ namespace PlutoRover.Domain
                 {
                     throw new NotImplementedException();
                 }
+            }
+        }
+
+        private void MoveBackward()
+        {
+            switch (_position.Direction)
+            {
+                case (Direction.North):
+                    {
+                        _position.Y--;
+                        break;
+                    }
+                case (Direction.East):
+                    {
+                        _position.X--;
+                        break;
+                    }
+                case (Direction.South):
+                    {
+                        _position.Y++;
+                        break;
+                    }
+                case (Direction.West):
+                    {
+                        _position.X++;
+                        break;
+                    }
+                default:
+                    {
+                        throw new NotImplementedException();
+                    }
             }
         }
     }
