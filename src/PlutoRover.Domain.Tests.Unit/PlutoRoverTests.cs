@@ -142,5 +142,30 @@ namespace PlutoRover.Domain.Tests.Unit
             Assert.Equal(end_y, _plutoRover.Position.Y);
             Assert.Equal(direction, _plutoRover.Position.Direction);
         }
+
+        [Theory]
+        [InlineData(1, 1, Direction.North, 1, 2, "FFF")]
+        [InlineData(1, 1, Direction.East, 2, 1, "FFF")]
+        [InlineData(1, 1, Direction.South, 1, 0, "FFF")]
+        [InlineData(1, 1, Direction.West, 0, 1, "FFF")]
+        public void ExecuteCommands_WhenRoverFindsAnObstacle_TheRoverReportsAFailure(
+            int start_x, int start_y, Direction direction, int obstacle_x, int obstacle_y, string cmd)
+        {
+            SetupObstacle(obstacle_x, obstacle_y);
+            _plutoRover = new PlutoRover(start_x, start_y, direction, _defaultGridWidth, _defaultGridHeight, _mockObstaclesChecker.Object);
+
+            var result = _plutoRover.ExecuteCommands(cmd);
+
+            Assert.Equal(Status.Failure, result.Status);
+        }
+
+        private void SetupObstacle(int x, int y)
+        {
+            _mockObstaclesChecker = new Mock<ICheckObstacles>();
+            _mockObstaclesChecker.Setup(c => c.ObstacleExist(It.IsNotIn(x), It.IsNotIn(y)))
+                .Returns(false);
+            _mockObstaclesChecker.Setup(c => c.ObstacleExist(It.IsIn(x), It.IsIn(y)))
+                .Returns(true);
+        }
     }
 }
