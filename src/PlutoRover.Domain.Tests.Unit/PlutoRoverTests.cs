@@ -32,7 +32,9 @@ namespace PlutoRover.Domain.Tests.Unit
         [InlineData("FBLRr ")]
         public void ExecuteCommands_WhenInputIsInvalid_AnArgumentExceptionIsThrown(string cmd)
         {
-            Assert.Throws<ArgumentException>(() => _plutoRover.ExecuteCommands(cmd));
+            var result = _plutoRover.ExecuteCommands(cmd);
+
+            Assert.Equal(Status.Failure, result.Status);
         }
 
         [Theory]

@@ -2,6 +2,6 @@
 {
     public interface IRover
     {
-        void ExecuteCommands(string cmd);
+        ExecutionResult ExecuteCommands(string cmd);
     }
 }

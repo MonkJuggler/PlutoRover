@@ -28,9 +28,15 @@ namespace PlutoRover.Domain
 
         public Position Position => _position;
 
-        public void ExecuteCommands(string cmd)
+        public ExecutionResult ExecuteCommands(string cmd)
         {
-            ValidateCommand(cmd);
+            var isValidCommand = ValidateCommand(cmd);
+
+            if (!isValidCommand)
+            {
+                return new ExecutionResult(Status.Failure, $"Command [{cmd}] contains invalid characters");
+            }
+
             foreach (var singleCommand in cmd)
             {
                 switch (singleCommand)
@@ -57,20 +63,18 @@ namespace PlutoRover.Domain
                     }
                     default:
                     {
-                        throw new NotImplementedException();
+                        return new ExecutionResult(Status.Failure, $"Command [{singleCommand}] not recognized");
                     }
                 }
             }
+
+            return new ExecutionResult(Status.Success, "Commands successfully executed");
         }
 
-        private void ValidateCommand(string cmd)
+        private bool ValidateCommand(string cmd)
         {
             var match = Regex.Match(cmd, @"^[FBLR]+$");
-
-            if (!match.Success)
-            {
-                throw new ArgumentException("Invalid command", nameof(cmd));
-            }
+            return match.Success;
         }
 
         private void RotateRight()
