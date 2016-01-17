@@ -12,6 +12,11 @@ namespace PlutoRover.Domain
             _position = position;
         }
 
+        public PlutoRover(int x, int y, Direction direction)
+        {
+            _position = new Position(x, y, direction);
+        }
+
         public Position Position => _position;
 
         public void ExecuteCommands(string cmd)
