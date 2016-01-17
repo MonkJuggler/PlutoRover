@@ -39,16 +39,17 @@ namespace PlutoRover.Domain
 
             foreach (var singleCommand in cmd)
             {
+                bool success = true;
                 switch (singleCommand)
                 {
                     case ('F'):
                     {
-                        MoveForward();
+                        success = MoveForward();
                         break;
                     }
                     case ('B'):
                     {
-                        MoveBackward();
+                        success = MoveBackward();
                         break;
                     }
                     case ('R'):
@@ -65,6 +66,11 @@ namespace PlutoRover.Domain
                     {
                         return new ExecutionResult(Status.Failure, $"Command [{singleCommand}] not recognized");
                     }
+                }
+
+                if (!success)
+                {
+                    return new ExecutionResult(Status.Failure, "An obstable was found on the Rover path");
                 }
             }
 
@@ -139,46 +145,57 @@ namespace PlutoRover.Domain
             }
         }
 
-        private void MoveForward()
+        private bool MoveForward()
         {
-            Move(Way.Forward);
+            return Move(Way.Forward);
         }
 
-        private void MoveBackward()
+        private bool MoveBackward()
         {
-            Move(Way.Backward);
+            return Move(Way.Backward);
         }
 
-        private void Move(Way way)
+        private bool Move(Way way)
         {
             var coefficient = way == Way.Forward ? 1 : -1;
+            var newX = _position.X;
+            var newY = _position.Y;
+
             switch (_position.Direction)
             {
                 case (Direction.North):
                 {
-                    _position.Y = WrapAround(_position.Y + coefficient, _gridHeight);
+                    newY = WrapAround(_position.Y + coefficient, _gridHeight);
                     break;
                 }
                 case (Direction.East):
                 {
-                    _position.X = WrapAround(_position.X + coefficient, _gridWidth);
+                    newX = WrapAround(_position.X + coefficient, _gridWidth);
                     break;
                 }
                 case (Direction.South):
                 {
-                        _position.Y = WrapAround(_position.Y - coefficient, _gridHeight);
-                        break;
+                    newY = WrapAround(_position.Y - coefficient, _gridHeight);
+                    break;
                 }
                 case (Direction.West):
                 {
-                        _position.X = WrapAround(_position.X - coefficient, _gridWidth);
-                        break;
+                    newX = WrapAround(_position.X - coefficient, _gridWidth);
+                    break;
                 }
                 default:
                 {
                     throw new NotImplementedException();
                 }
             }
+
+            if (_obstaclesChecker.ObstacleExist(newX, newY))
+            {
+                return false;
+            }
+            _position.X = newX;
+            _position.Y = newY;
+            return true;
         }
 
         private int WrapAround(int n, int mod)
