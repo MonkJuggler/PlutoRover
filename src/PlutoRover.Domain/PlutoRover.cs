@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Remoting.Messaging;
 using System.Text.RegularExpressions;
 
 namespace PlutoRover.Domain
@@ -56,63 +57,43 @@ namespace PlutoRover.Domain
 
         private void MoveForward()
         {
+            Move(Way.Forward);
+        }
+
+        private void MoveBackward()
+        {
+            Move(Way.Backward);
+        }
+
+        private void Move(Way way)
+        {
+            var coefficient = way == Way.Forward ? 1 : -1;
             switch (_position.Direction)
             {
                 case (Direction.North):
                 {
-                    _position.Y++;
+                    _position.Y += coefficient;
                     break;
                 }
                 case (Direction.East):
                 {
-                    _position.X++;
+                    _position.X += coefficient;
                     break;
                 }
                 case (Direction.South):
                 {
-                    _position.Y--;
+                    _position.Y -= coefficient;
                     break;
                 }
                 case (Direction.West):
                 {
-                    _position.X--;
+                    _position.X -= coefficient;
                     break;
                 }
                 default:
                 {
                     throw new NotImplementedException();
                 }
-            }
-        }
-
-        private void MoveBackward()
-        {
-            switch (_position.Direction)
-            {
-                case (Direction.North):
-                    {
-                        _position.Y--;
-                        break;
-                    }
-                case (Direction.East):
-                    {
-                        _position.X--;
-                        break;
-                    }
-                case (Direction.South):
-                    {
-                        _position.Y++;
-                        break;
-                    }
-                case (Direction.West):
-                    {
-                        _position.X++;
-                        break;
-                    }
-                default:
-                    {
-                        throw new NotImplementedException();
-                    }
             }
         }
     }
