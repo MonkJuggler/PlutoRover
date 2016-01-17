@@ -29,15 +29,15 @@ namespace PlutoRover.Domain.Tests.Unit
         }
 
         [Theory]
-        [InlineData(1, 1, Direction.North, "F", 1, 2)]
-        [InlineData(1, 1, Direction.East, "F", 2, 1)]
-        [InlineData(1, 1, Direction.South, "F", 1, 0)]
-        [InlineData(1, 1, Direction.West, "F", 0, 1)]
-        public void ExecuteCommands_WhenMoveForwardCommand_TheRoverMovesForward(int start_x, int start_y, Direction direction, string cmd, int end_x, int end_y)
+        [InlineData(1, 1, Direction.North, 1, 2)]
+        [InlineData(1, 1, Direction.East, 2, 1)]
+        [InlineData(1, 1, Direction.South, 1, 0)]
+        [InlineData(1, 1, Direction.West, 0, 1)]
+        public void ExecuteCommands_WhenMoveForwardCommand_TheRoverMovesForward(int start_x, int start_y, Direction direction, int end_x, int end_y)
         {
             _plutoRover = new PlutoRover(start_x, start_y, direction);
 
-            _plutoRover.ExecuteCommands(cmd);
+            _plutoRover.ExecuteCommands("F");
 
             Assert.Equal(end_x, _plutoRover.Position.X);
             Assert.Equal(end_y, _plutoRover.Position.Y);
@@ -45,15 +45,15 @@ namespace PlutoRover.Domain.Tests.Unit
         }
 
         [Theory]
-        [InlineData(1, 1, Direction.North, "B", 1, 0)]
-        [InlineData(1, 1, Direction.East, "B", 0, 1)]
-        [InlineData(1, 1, Direction.South, "B", 1, 2)]
-        [InlineData(1, 1, Direction.West, "B", 2, 1)]
-        public void ExecuteCommands_WhenMoveBackwardCommand_TheRoverMovesBackward(int start_x, int start_y, Direction direction, string cmd, int end_x, int end_y)
+        [InlineData(1, 1, Direction.North, 1, 0)]
+        [InlineData(1, 1, Direction.East, 0, 1)]
+        [InlineData(1, 1, Direction.South, 1, 2)]
+        [InlineData(1, 1, Direction.West, 2, 1)]
+        public void ExecuteCommands_WhenMoveBackwardCommand_TheRoverMovesBackward(int start_x, int start_y, Direction direction, int end_x, int end_y)
         {
             _plutoRover = new PlutoRover(start_x, start_y, direction);
 
-            _plutoRover.ExecuteCommands(cmd);
+            _plutoRover.ExecuteCommands("B");
 
             Assert.Equal(end_x, _plutoRover.Position.X);
             Assert.Equal(end_y, _plutoRover.Position.Y);
@@ -61,15 +61,31 @@ namespace PlutoRover.Domain.Tests.Unit
         }
 
         [Theory]
-        [InlineData(1, 1, Direction.North, "R", Direction.East)]
-        [InlineData(1, 1, Direction.East, "R", Direction.South)]
-        [InlineData(1, 1, Direction.South, "R", Direction.West)]
-        [InlineData(1, 1, Direction.West, "R", Direction.North)]
-        public void ExecuteCommands_WhenRotateRightCommand_TheRoverRotatesRight(int x, int y, Direction start_dir, string cmd, Direction end_dir)
+        [InlineData(1, 1, Direction.North, Direction.East)]
+        [InlineData(1, 1, Direction.East, Direction.South)]
+        [InlineData(1, 1, Direction.South, Direction.West)]
+        [InlineData(1, 1, Direction.West, Direction.North)]
+        public void ExecuteCommands_WhenRotateRightCommand_TheRoverRotatesRight(int x, int y, Direction start_dir, Direction end_dir)
         {
             _plutoRover = new PlutoRover(x, y, start_dir);
 
-            _plutoRover.ExecuteCommands(cmd);
+            _plutoRover.ExecuteCommands("R");
+
+            Assert.Equal(x, _plutoRover.Position.X);
+            Assert.Equal(y, _plutoRover.Position.Y);
+            Assert.Equal(end_dir, _plutoRover.Position.Direction);
+        }
+
+        [Theory]
+        [InlineData(1, 1, Direction.North, Direction.West)]
+        [InlineData(1, 1, Direction.East, Direction.South)]
+        [InlineData(1, 1, Direction.South, Direction.East)]
+        [InlineData(1, 1, Direction.West, Direction.North)]
+        public void ExecuteCommands_WhenRotateLeftCommand_TheRoverRotatesLeft(int x, int y, Direction start_dir, Direction end_dir)
+        {
+            _plutoRover = new PlutoRover(x, y, start_dir);
+
+            _plutoRover.ExecuteCommands("L");
 
             Assert.Equal(x, _plutoRover.Position.X);
             Assert.Equal(y, _plutoRover.Position.Y);
