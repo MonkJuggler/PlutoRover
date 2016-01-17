@@ -22,6 +22,21 @@ namespace PlutoRover.Domain
         public void ExecuteCommands(string cmd)
         {
             ValidateCommand(cmd);
+            foreach (var singleCommand in cmd)
+            {
+                switch (singleCommand)
+                {
+                    case ('F'):
+                    {
+                        MoveForward();
+                        break;
+                    }
+                    default:
+                    {
+                        throw new NotImplementedException();
+                    }
+                }
+            }
         }
 
         private void ValidateCommand(string cmd)
@@ -31,6 +46,37 @@ namespace PlutoRover.Domain
             if (!match.Success)
             {
                 throw new ArgumentException("Invalid command", nameof(cmd));
+            }
+        }
+
+        private void MoveForward()
+        {
+            switch (_position.Direction)
+            {
+                case (Direction.North):
+                {
+                    _position.Y++;
+                    break;
+                }
+                case (Direction.East):
+                {
+                    _position.X++;
+                    break;
+                }
+                case (Direction.South):
+                {
+                    _position.Y--;
+                    break;
+                }
+                case (Direction.West):
+                {
+                    _position.X--;
+                    break;
+                }
+                default:
+                {
+                    throw new NotImplementedException();
+                }
             }
         }
     }
