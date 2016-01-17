@@ -63,7 +63,7 @@ namespace PlutoRover.Domain.Tests.Unit
         [Theory]
         [InlineData(1, 1, Direction.North, "R", Direction.East)]
         [InlineData(1, 1, Direction.East, "R", Direction.South)]
-        [InlineData(1, 1, Direction.South, "R", Direction.East)]
+        [InlineData(1, 1, Direction.South, "R", Direction.West)]
         [InlineData(1, 1, Direction.West, "R", Direction.North)]
         public void ExecuteCommands_WhenRotateRightCommand_TheRoverRotatesRight(int x, int y, Direction start_dir, string cmd, Direction end_dir)
         {

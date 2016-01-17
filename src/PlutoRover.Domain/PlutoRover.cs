@@ -37,6 +37,11 @@ namespace PlutoRover.Domain
                         MoveBackward();
                         break;
                     }
+                    case ('R'):
+                    {
+                        RotateRight();
+                        break;
+                    }
                     default:
                     {
                         throw new NotImplementedException();
@@ -52,6 +57,37 @@ namespace PlutoRover.Domain
             if (!match.Success)
             {
                 throw new ArgumentException("Invalid command", nameof(cmd));
+            }
+        }
+
+        private void RotateRight()
+        {
+            switch (_position.Direction)
+            {
+                case (Direction.North):
+                {
+                    _position.Direction = Direction.East;
+                    break;
+                }
+                case (Direction.East):
+                {
+                    _position.Direction = Direction.South;
+                    break;
+                }
+                case (Direction.South):
+                {
+                    _position.Direction = Direction.West;
+                    break;
+                }
+                case (Direction.West):
+                {
+                    _position.Direction = Direction.North;
+                    break;
+                }
+                default:
+                {
+                    throw new NotImplementedException();
+                }
             }
         }
 
