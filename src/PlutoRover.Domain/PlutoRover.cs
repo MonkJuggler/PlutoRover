@@ -1,6 +1,6 @@
 ﻿namespace PlutoRover.Domain
 {
-    class PlutoRover : IRover
+    public class PlutoRover : IRover
     {
         private readonly Position _position;
 
