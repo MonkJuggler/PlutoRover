@@ -42,6 +42,11 @@ namespace PlutoRover.Domain
                         RotateRight();
                         break;
                     }
+                    case ('L'):
+                    {
+                        RotateLeft();
+                        break;
+                    }
                     default:
                     {
                         throw new NotImplementedException();
@@ -88,6 +93,37 @@ namespace PlutoRover.Domain
                 {
                     throw new NotImplementedException();
                 }
+            }
+        }
+
+        private void RotateLeft()
+        {
+            switch (_position.Direction)
+            {
+                case (Direction.North):
+                    {
+                        _position.Direction = Direction.West;
+                        break;
+                    }
+                case (Direction.West):
+                    {
+                        _position.Direction = Direction.South;
+                        break;
+                    }
+                case (Direction.South):
+                    {
+                        _position.Direction = Direction.East;
+                        break;
+                    }
+                case (Direction.East):
+                    {
+                        _position.Direction = Direction.North;
+                        break;
+                    }
+                default:
+                    {
+                        throw new NotImplementedException();
+                    }
             }
         }
 
