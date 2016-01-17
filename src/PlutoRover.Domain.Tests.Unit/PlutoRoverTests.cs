@@ -59,5 +59,21 @@ namespace PlutoRover.Domain.Tests.Unit
             Assert.Equal(end_y, _plutoRover.Position.Y);
             Assert.Equal(direction, _plutoRover.Position.Direction);
         }
+
+        [Theory]
+        [InlineData(1, 1, Direction.North, "R", Direction.East)]
+        [InlineData(1, 1, Direction.East, "R", Direction.South)]
+        [InlineData(1, 1, Direction.South, "R", Direction.East)]
+        [InlineData(1, 1, Direction.West, "R", Direction.North)]
+        public void ExecuteCommands_WhenRotateRightCommand_TheRoverRotatesRight(int x, int y, Direction start_dir, string cmd, Direction end_dir)
+        {
+            _plutoRover = new PlutoRover(x, y, start_dir);
+
+            _plutoRover.ExecuteCommands(cmd);
+
+            Assert.Equal(x, _plutoRover.Position.X);
+            Assert.Equal(y, _plutoRover.Position.Y);
+            Assert.Equal(end_dir, _plutoRover.Position.Direction);
+        }
     }
 }
