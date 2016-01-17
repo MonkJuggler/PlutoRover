@@ -1,4 +1,7 @@
-﻿namespace PlutoRover.Domain
+﻿using System;
+using System.Text.RegularExpressions;
+
+namespace PlutoRover.Domain
 {
     public class PlutoRover : IRover
     {
@@ -13,7 +16,17 @@
 
         public void ExecuteCommands(string cmd)
         {
-            throw new System.NotImplementedException();
+            ValidateCommand(cmd);
+        }
+
+        private void ValidateCommand(string cmd)
+        {
+            var match = Regex.Match(cmd, @"^[FBLR]+$");
+
+            if (!match.Success)
+            {
+                throw new ArgumentException("Invalid command", nameof(cmd));
+            }
         }
     }
 }
