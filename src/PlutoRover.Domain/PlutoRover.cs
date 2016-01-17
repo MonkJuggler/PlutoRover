@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.Remoting.Messaging;
 using System.Text.RegularExpressions;
 
 namespace PlutoRover.Domain
@@ -7,14 +6,20 @@ namespace PlutoRover.Domain
     public class PlutoRover : IRover
     {
         private readonly Position _position;
+        private readonly int _gridWidth;
+        private readonly int _gridHeight;
 
-        public PlutoRover(Position position)
+        public PlutoRover(Position position, int gridWidth, int gridHeight)
         {
             _position = position;
+            _gridWidth = gridWidth;
+            _gridHeight = gridHeight;
         }
 
-        public PlutoRover(int x, int y, Direction direction)
+        public PlutoRover(int x, int y, Direction direction, int gridWidth, int gridHeight)
         {
+            _gridWidth = gridWidth;
+            _gridHeight = gridHeight;
             _position = new Position(x, y, direction);
         }
 
